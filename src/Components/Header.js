@@ -56,6 +56,7 @@ function Header({setQuery}) {
 
                 {loggedin && <li onClick={goTo('dashboard')}>Your Projects</li>}
 
+
               </ul>
             </div>
           </div>

@@ -30,7 +30,6 @@ CORS(app)
 app.config['MONGO_URI'] = os.environ.get('DB')
 mongo = PyMongo(app)
 
-
 app.secret_key = "testing"
 records = mongo.db.users
 
