@@ -3,6 +3,8 @@ import { ReactSession } from "react-client-session";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Service from "../Service";
+import {useHistory} from "react-router-dom";
+
 
 const Styles = styled.div`
  background: #218888;
@@ -77,7 +79,14 @@ function ProjectForm() {
   const [message, setMessage] = React.useState("");
   const [user, setUser] = React.useState([""]);
   const [tags, setTags] = React.useState("");
+  const [contributors, setContributors] = React.useState("");
+  const history = useHistory();
 
+/*
+  const goTo = (page) => () => {
+    history.push('/' + page);
+  };
+*/
   React.useEffect(() => {
     setUser(ReactSession.get("username"));
   }, []);
@@ -98,8 +107,15 @@ function ProjectForm() {
     setTags(e.target.value);
   }
 
+  const handleContributorsChange = (e) => {
+    setContributors(e.target.value);
+  }
+
+
   const handleSubmit = (event) => {
     const form = new FormData();
+
+
     form.append("productName", name);
     form.append("productDescription", description);
     form.append("imageUrl", imageURL);
@@ -109,12 +125,17 @@ function ProjectForm() {
       .then((data) =>
         {setMessage(data.message);
           console.log(data.code);
-          if (data.code > 200) {
+
+       /*   if (data.code > 200) {
             console.log(message)
           }
+          else{
+                history.push('/');
+          }*/
         }).catch(function(err){
           setMessage("There was a problem submitting your product. Please try again later.")
       });
+       history.push('/dashboard');
    }
 
   return (
@@ -124,7 +145,7 @@ function ProjectForm() {
 
         </div>
       </div>
-          <form data-testid="submit_form" onSubmit={handleSubmit}>
+          <form data-testid="submit_form">
                <h3>PROJECT FORM</h3>
               <label>Name</label>
                 <TextField
@@ -171,7 +192,18 @@ function ProjectForm() {
                   onChange={handleTagsChange}
                   fullWidth
                 />
-
+                <label>Contributors</label>
+                <TextField
+                  id="contributors"
+                  label=""
+                  multiline
+                  rows={5}
+                  inputProps={{ "data-testid": "form-Contributors" }}
+                  value={contributors}
+                  onChange={handleContributorsChange}
+                  fullWidth
+                />
+              
             <button data-testid="submit_button" onClick={handleSubmit}>Submit</button>
           </form>
     </div>
